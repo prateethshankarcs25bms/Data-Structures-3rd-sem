@@ -1,0 +1,82 @@
+#include<stdio.h>
+#include<conio.h>
+#define Max_size 10
+int TOP=-1;
+int stack[Max_size];
+void push(int val){
+    if(TOP==Max_size-1){
+        printf("stack overflow\n");
+    }
+    else{
+        stack[++TOP]=val;
+    }
+
+}
+void pop(){
+   if(TOP==-1){
+        printf("stack underflow\n");
+    }
+    else{
+      TOP--;
+    }
+}
+void top(){
+    if(TOP==-1){
+        printf("stack underflow\n");
+    }
+    else{
+        printf("%d",stack[TOP]);
+    }
+}
+
+void display(){
+    if(TOP==-1){
+        printf("stack is empty\n");
+    }
+ for(int i=0;i<TOP+1 ,;i++){
+    printf("%d\t",stack[i]);
+ }
+}
+
+int main(){
+
+     printf("Welcome to stack implementation using array\n");
+     printf("enter elements you want intially \n");
+     int intial_size;
+     scanf("%d",&intial_size);
+  for(int i=0;i<intial_size;i++){
+       printf("enter element %d",i+1);
+            scanf("%d",&stack[i]);
+            ++TOP;
+   }
+    int choice,val;
+int exit=0;
+while(exit!=-1){
+    printf("enter following choices 1.push 2.pop,3.peek 4.display\n -1.exit\n");
+    scanf("%d",&choice);
+    switch(choice){
+ case 1:
+    printf("enter value : ");
+    scanf("%d",&val);
+    push(val);
+    break;
+
+ case 2:
+
+    pop();
+    break;
+
+case 3:{
+   top();
+   break;}
+
+ case 4:
+    display();
+    break;
+    default:printf("thank you\n ");
+
+
+}
+}
+return 0;
+}
