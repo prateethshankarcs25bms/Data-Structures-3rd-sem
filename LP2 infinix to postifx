@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char c) { stack[++top] = c; }
+char pop()        { return stack[top--]; }
+char peek()       { return stack[top]; }
+
+int prec(char c) {
+    switch (c) {
+        case '^': return 3;
+        case '*':
+        case '/': return 2;
+        case '+':
+        case '-': return 1;
+    }
+    return 0;
+}
+
+void infixToPostfix(char *infix, char *postfix) {
+    int j = 0;
+    for (int i = 0; infix[i] != '\0'; i++) {
+        char c = infix[i];
+
+        if (isspace(c)) continue;
+
+        if (isalnum(c)) {
+            postfix[j++] = c;
+        }
+        else if (c == '(') {
+            push(c);
+        }
+        else if (c == ')') {
+            while (top != -1 && peek() != '(')
+                postfix[j++] = pop();
+            if (top != -1) pop();   // discard '('
+        }
+        else {                      // operator
+            while (top != -1 && peek() != '(' &&
+                   (prec(peek()) > prec(c) ||
+                   (prec(peek()) == prec(c) && c != '^')))
+                postfix[j++] = pop();
+            push(c);
+        }
+    }
+    while (top != -1) {
+        char c = pop();
+        if (c != '(') postfix[j++] = c;
+    }
+    postfix[j] = '\0';
+}
+
+int main() {
+    char infix[MAX], postfix[MAX];
+
+    printf("Enter infix expression: ");
+    fgets(infix, MAX, stdin);
+    infix[strcspn(infix, "\n")] = '\0';
+
+    infixToPostfix(infix, postfix);
+    printf("Postfix: %s\n", postfix);
+    return 0;
+}
